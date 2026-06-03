@@ -10,7 +10,7 @@ import {
     useMessage
 } from 'naive-ui'
 
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '../../stores/authStore'
 
 const authStore = useAuthStore()
 const router = useRouter()

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
+import { useAuthStore } from '../stores/authStore'
 const routes = [
     {
         path: '/',
@@ -10,7 +10,7 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: () => import('@/views/auth/LoginView.vue'),
+        component: () => import('../views/auth/LoginView.vue'),
         meta: {
             guest: true
         }
@@ -18,7 +18,7 @@ const routes = [
     {
         path: '/register',
         name: 'register',
-        component: () => import('@/views/auth/RegisterView.vue'),
+        component: () => import('../views/auth/RegisterView.vue'),
         meta: {
             guest: true
         }
@@ -28,7 +28,7 @@ const routes = [
     {
         path: '/home',
         name: 'home',
-        component: () => import('@/views/HomeView.vue'),
+        component: () => import('../views/HomeView.vue'),
         meta: {
             requiresAuth: true
         }
@@ -36,7 +36,7 @@ const routes = [
     {
         path: '/matches',
         name: 'matches',
-        component: () => import('@/views/MatchesView.vue'),
+        component: () => import('../views/MatchesView.vue'),
         meta: {
             requiresAuth: true
         }
@@ -44,7 +44,7 @@ const routes = [
     {
         path: '/predictions',
         name: 'predictions',
-        component: () => import('@/views/PredictionsView.vue'),
+        component: () => import('../views/PredictionsView.vue'),
         meta: {
             requiresAuth: true
         }
@@ -52,7 +52,7 @@ const routes = [
     {
         path: '/profile',
         name: 'profile',
-        component: () => import('@/views/ProfileView.vue'),
+        component: () => import('../views/ProfileView.vue'),
         meta: {
             requiresAuth: true
         }
