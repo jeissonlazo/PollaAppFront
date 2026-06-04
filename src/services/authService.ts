@@ -18,5 +18,16 @@ export const authService = {
     async login(payload: LoginRequest): Promise<LoginResponse> {
         const response = await api.post('/auth/login', payload)
         return response.data
+    },
+    async register(payload: RegisterRequest) {
+        return api.post('/auth/register', payload)
     }
+}
+
+export interface RegisterRequest {
+    first_name: string
+    last_name: string
+    username: string
+    email: string
+    password: string
 }

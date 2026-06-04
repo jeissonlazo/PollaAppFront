@@ -33,39 +33,36 @@ const handleLogin = async () => {
         message.error('Usuario o contraseña incorrectos')
     }
 }
+
+const handleRegister = () => {
+    router.push('/register')
+}
 </script>
 
 <template>
     <div class="login-container">
-        <NCard
-            title="Polla Man"
-            class="login-card"
-        >
+        <NCard title="" class="login-card">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <img src="../../assets/logo.svg" class="logo" />
+            </div>
+            <n-h3>Pollapp</n-h3>
             <NForm @submit.prevent="handleLogin">
 
                 <NFormItem label="Usuario o Email">
-                    <NInput
-                        v-model:value="usernameOrEmail"
-                        placeholder="Ingresa tu usuario"
-                    />
+                    <NInput v-model:value="usernameOrEmail" placeholder="Ingresa tu usuario" />
                 </NFormItem>
 
                 <NFormItem label="Contraseña">
-                    <NInput
-                        v-model:value="password"
-                        type="password"
-                        show-password-on="click"
-                        placeholder="Ingresa tu contraseña"
-                    />
+                    <NInput v-model:value="password" type="password" show-password-on="click"
+                        placeholder="Ingresa tu contraseña" />
                 </NFormItem>
 
-                <NButton
-                    type="primary"
-                    block
-                    :loading="authStore.loading"
-                    @click="handleLogin"
-                >
+                <NButton type="primary" block :loading="authStore.loading" @click="handleLogin">
                     Iniciar Sesión
+                </NButton>
+
+                <NButton block style="margin-top: 24px;" :loading="authStore.loading" @click="handleRegister">
+                    Crear Cuenta
                 </NButton>
 
             </NForm>
@@ -84,5 +81,9 @@ const handleLogin = async () => {
 
 .login-card {
     width: 400px;
+}
+
+.logo {
+	width: 80px;
 }
 </style>
