@@ -11,16 +11,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
 const loading = ref(false)
-const predictions = ref([])
+const predictions = ref<string[]>([])
 
-function fetchPredictions() {
+function fetchPredictions(): Promise<string[]> {
   loading.value = true
   // placeholder: replace with real API call
-  return new Promise((resolve) => {
+  return new Promise((resolve: (value: string[]) => void) => {
     setTimeout(() => {
       resolve(['Prediction A', 'Prediction B', 'Prediction C'])
     }, 500)
