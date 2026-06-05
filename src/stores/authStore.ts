@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { authService, type RegisterRequest } from "../services/authService";
+import type ConfirmationEmailRequest from "../interfaces/ConfirmationEmailInterface";
 
 export const useAuthStore = defineStore("auth", () => {
   const token = ref<string | null>(localStorage.getItem("token"));
@@ -39,6 +40,21 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
+  async function confirmEmail(confirmationCode:ConfirmationEmailRequest) {
+    loading.value = true;
+
+    try {
+      const response = await authService.confirmEmail({
+        email: confirmationCode.email,
+        code: confirmationCode.code
+      });
+
+      return response.data;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   function logout() {
     token.value = null;
     localStorage.removeItem("token");
@@ -51,5 +67,6 @@ export const useAuthStore = defineStore("auth", () => {
     login,
     logout,
     register,
+    confirmEmail
   };
 });

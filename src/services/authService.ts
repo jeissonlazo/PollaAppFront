@@ -1,4 +1,5 @@
 import axios from 'axios'
+import type ConfirmationEmailRequest from '../interfaces/ConfirmationEmailInterface'
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL
@@ -20,7 +21,11 @@ export const authService = {
         return response.data
     },
     async register(payload: RegisterRequest) {
+        console.log(payload)
         return api.post('/auth/register', payload)
+    },
+    async confirmEmail(payload: ConfirmationEmailRequest) {
+        return api.post('/auth/verify-email', payload)
     }
 }
 

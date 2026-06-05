@@ -28,7 +28,7 @@ const handleLogin = async () => {
 
         message.success('Bienvenido')
 
-        router.push('/home')
+        router.push('/confirm-email')
     } catch (error) {
         message.error('Usuario o contraseña incorrectos')
     }

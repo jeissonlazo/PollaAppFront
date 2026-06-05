@@ -10,9 +10,10 @@ import {
 	type FormRules,
 	useMessage
 } from 'naive-ui'
-
+import { useAuthStore } from '../../stores/authStore'
 const router = useRouter()
 const message = useMessage()
+const authStore = useAuthStore()
 
 const loading = ref(false)
 const formRef = ref()
@@ -99,14 +100,11 @@ const handleRegister = async () => {
 
 		loading.value = true
 
-		// TODO:
-		// await authStore.register(form)
-
-		console.log(form)
+		await authStore.register(form)
 
 		message.success('Cuenta creada correctamente')
 
-		router.push('/login')
+		router.push(`/confirm-email/${form.email}`)
 	} catch {
 		message.error('Verifique los datos del formulario')
 	} finally {

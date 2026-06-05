@@ -23,6 +23,14 @@ const routes = [
             guest: true
         }
     },
+    {
+        path: '/confirm-email/:email',
+        name: 'confirm-email',
+        component: () => import('../views/auth/ConfirmEmailView.vue'),
+        meta: {
+            guest: true
+        }
+    },
 
     // Private Routes
     {
