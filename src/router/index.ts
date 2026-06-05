@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
+
 const routes = [
     {
         path: '/',
-        redirect: '/home'
+        redirect: '/dashboard/home'
     },
 
-    // Auth
+    // AUTH
     {
         path: '/login',
         name: 'login',
@@ -32,43 +33,44 @@ const routes = [
         }
     },
 
-    // Private Routes
+    // DASHBOARD
     {
-        path: '/home',
-        name: 'home',
-        component: () => import('../views/HomeView.vue'),
+        path: '/dashboard',
+        component: () => import('../layouts/DashboardLayout.vue'),
         meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/matches',
-        name: 'matches',
-        component: () => import('../views/MatchesView.vue'),
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/predictions',
-        name: 'predictions',
-        component: () => import('../views/PredictionsView.vue'),
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/profile',
-        name: 'profile',
-        component: () => import('../views/ProfileView.vue'),
-        meta: {
-            requiresAuth: true
-        }
+            //requiresAuth: true
+        },
+        children: [
+            {
+                path: '',
+                redirect: '/dashboard/home'
+            },
+            {
+                path: 'home',
+                name: 'home',
+                component: () => import('../views/dashboard/HomeView.vue')
+            },
+            {
+                path: 'matches',
+                name: 'matches',
+                component: () => import('../views/dashboard/MatchesView.vue')
+            },
+            {
+                path: 'predictions',
+                name: 'predictions',
+                component: () => import('../views/dashboard/PredictionsView.vue')
+            },
+            {
+                path: 'profile',
+                name: 'profile',
+                component: () => import('../views/dashboard/ProfileView.vue')
+            }
+        ]
     },
 
     {
         path: '/:pathMatch(.*)*',
-        redirect: '/home'
+        redirect: '/dashboard/home'
     }
 ]
 
@@ -85,7 +87,7 @@ router.beforeEach((to, _from, next) => {
     }
 
     if (to.meta.guest && authStore.isAuthenticated) {
-        return next('/home')
+        return next('/dashboard/home')
     }
 
     next()
