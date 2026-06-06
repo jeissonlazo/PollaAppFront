@@ -37,6 +37,13 @@ const openGroup = (groupId: string) => {
     router.push(`/groups/${groupId}`)
 }
 
+const handleCreateGroup = () => {
+    router.push('/dashboard/groups/create')
+}
+
+const handleJoinGroup = () => {
+    router.push('/dashboard/groups/join')
+}
 onMounted(loadGroups)
 </script>
 
@@ -45,6 +52,21 @@ onMounted(loadGroups)
 
         <div class="header">
             <NH2>Mis Grupos</NH2>
+            <div class="actions">
+                <NButton
+                    type="primary"
+                    @click="handleCreateGroup"
+                >
+                    Crear Grupo
+                </NButton>
+
+                <NButton
+                    secondary
+                    @click="handleJoinGroup"
+                >
+                    Unirse a un Grupo
+                </NButton>
+            </div>
         </div>
 
         <NSpin :show="localLoading">
@@ -87,9 +109,9 @@ onMounted(loadGroups)
 
                         </div>
                     </NCard>
+
                 </NGridItem>
             </NGrid>
-
         </NSpin>
 
     </div>
@@ -121,5 +143,18 @@ onMounted(loadGroups)
 
 .card-content h3 {
     margin: 0;
+}
+
+.header {
+    margin-bottom: 24px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
 }
 </style>
