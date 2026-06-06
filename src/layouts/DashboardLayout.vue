@@ -30,6 +30,9 @@ import DashboardHeader from './DashboardHeader.vue'
 }
 
 .content {
+    background: #f5f7fa;
     padding: 24px;
+    box-sizing: border-box;
+    min-height: calc(100vh - 65px);
 }
 </style>

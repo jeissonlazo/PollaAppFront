@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-
 import {
     NCard,
     NGrid,
@@ -11,53 +10,30 @@ import {
     NEmpty,
     NSpin
 } from 'naive-ui'
-
+import { useGroupStore } from '../../stores/groupStore'
+import type { Group } from '../../interfaces/group'
+import { useAuthStore } from '../../stores/authStore'
+const groupStore = useGroupStore()
+const authStore = useAuthStore()
 const router = useRouter()
 
-interface UserGroup {
-    id: number
-    name: string
-    eventName: string
-    members: number
-}
+const localLoading = ref(false)
 
-const loading = ref(false)
-
-const groups = ref<UserGroup[]>([])
+const localGroups = ref<Group[]>([])
 
 const loadGroups = async () => {
-    loading.value = true
-
+    localLoading.value = true
     try {
         // TODO:
-        // const response = await groupStore.getMyGroups()
+        await groupStore.loadGroups(authStore.user?.id || '')
 
-        groups.value = [
-            {
-                id: 1,
-                name: 'Amigos del Trabajo',
-                eventName: 'Mundial FIFA 2026',
-                members: 12
-            },
-            {
-                id: 2,
-                name: 'La Familia',
-                eventName: 'Mundial FIFA 2026',
-                members: 8
-            },
-            {
-                id: 3,
-                name: 'Universidad',
-                eventName: 'Mundial FIFA 2026',
-                members: 15
-            }
-        ]
+        localGroups.value = groupStore.groups
     } finally {
-        loading.value = false
+        localLoading.value = false
     }
 }
 
-const openGroup = (groupId: number) => {
+const openGroup = (groupId: string) => {
     router.push(`/groups/${groupId}`)
 }
 
@@ -71,10 +47,10 @@ onMounted(loadGroups)
             <NH2>Mis Grupos</NH2>
         </div>
 
-        <NSpin :show="loading">
+        <NSpin :show="localLoading">
 
             <NEmpty
-                v-if="groups.length === 0"
+                v-if="localGroups.length === 0"
                 description="No perteneces a ningún grupo"
             />
 
@@ -86,7 +62,7 @@ onMounted(loadGroups)
                 :y-gap="16"
             >
                 <NGridItem
-                    v-for="group in groups"
+                    v-for="group in localGroups"
                     :key="group.id"
                 >
                     <NCard

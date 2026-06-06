@@ -2,13 +2,15 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { authService, type RegisterRequest } from "../services/authService";
 import type ConfirmationEmailRequest from "../interfaces/ConfirmationEmailInterface";
-
+import type { User } from "../interfaces/LoginInterface";
 export const useAuthStore = defineStore("auth", () => {
   const token = ref<string | null>(localStorage.getItem("token"));
 
   const loading = ref(false);
 
   const isAuthenticated = computed(() => !!token.value);
+
+  const user = ref<User | null>(JSON.parse(localStorage.getItem("user") || "null"));
 
   async function register(payload: RegisterRequest) {
     loading.value = true;
@@ -31,8 +33,10 @@ export const useAuthStore = defineStore("auth", () => {
       });
 
       token.value = response.access_token;
+      user.value = response.user;
 
       localStorage.setItem("token", response.access_token);
+      localStorage.setItem("user", JSON.stringify(response.user));
 
       return true;
     } finally {
@@ -64,6 +68,7 @@ export const useAuthStore = defineStore("auth", () => {
     token,
     loading,
     isAuthenticated,
+    user,
     login,
     logout,
     register,

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type ConfirmationEmailRequest from '../interfaces/ConfirmationEmailInterface'
-
+import type { LoginResponse } from '../interfaces/LoginInterface'
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL
 })
@@ -10,10 +10,6 @@ export interface LoginRequest {
     password: string
 }
 
-export interface LoginResponse {
-    access_token: string
-    token_type: string
-}
 
 export const authService = {
     async login(payload: LoginRequest): Promise<LoginResponse> {
@@ -21,7 +17,6 @@ export const authService = {
         return response.data
     },
     async register(payload: RegisterRequest) {
-        console.log(payload)
         return api.post('/auth/register', payload)
     },
     async confirmEmail(payload: ConfirmationEmailRequest) {
