@@ -13,7 +13,9 @@ import {
 import { useGroupStore } from '../../stores/groupStore'
 import type { Group } from '../../interfaces/group'
 import { useAuthStore } from '../../stores/authStore'
+import CreateGroupDialog from '../../components/CreateGroupDialog.vue'
 const groupStore = useGroupStore()
+const showCreateDialog = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
 
@@ -38,7 +40,7 @@ const openGroup = (groupId: string) => {
 }
 
 const handleCreateGroup = () => {
-    router.push('/dashboard/groups/create')
+    showCreateDialog.value = true
 }
 
 const handleJoinGroup = () => {
@@ -113,7 +115,7 @@ onMounted(loadGroups)
                 </NGridItem>
             </NGrid>
         </NSpin>
-
+        <CreateGroupDialog v-model:show="showCreateDialog" />
     </div>
 </template>
 

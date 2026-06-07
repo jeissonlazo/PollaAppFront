@@ -7,5 +7,10 @@ export interface Group {
 
 export interface CreateGroupRequest {
     name: string
-    eventId: string
+    tournament: string,
+    description?: string
+    observations?: string
+    users_limit?: number,
+    admin_id: string,
+    invite_code?: string
 }
