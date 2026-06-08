@@ -31,7 +31,7 @@ const formRef = ref()
 const form = ref({
     name: '',
     users_limit: 10,
-    tournament: '',
+    tournament_id: '',
     description: '',
     observations: ''
 })
@@ -61,7 +61,7 @@ const rules: FormRules = {
         }
     ],
 
-    tournament: [
+    tournament_id: [
         {
             required: true,
             message: 'Seleccione un torneo',
@@ -80,7 +80,6 @@ const handleCreateGroup = async () => {
     try {
 
         await formRef.value?.validate()
-
         await groupStore.createGroup({...form.value, admin_id: userStore.user?.id || ''})
 
         message.success('Grupo creado correctamente')
@@ -138,7 +137,7 @@ const handleCancel = () => {
                     label="Torneo"
                     path="tournament"
                 >
-                    <n-select v-model:value="form.tournament" :options="tournamentOptions" placeholder="Seleccione un torneo" />
+                    <n-select v-model:value="form.tournament_id" :options="tournamentOptions" placeholder="Seleccione un torneo" />
                 </NFormItem>
 
                 <NFormItem label="Descripción">

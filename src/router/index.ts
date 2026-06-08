@@ -1,96 +1,101 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '../stores/authStore'
+import { createRouter, createWebHistory } from "vue-router";
+import { useAuthStore } from "../stores/authStore";
 
 const routes = [
-    {
-        path: '/',
-        redirect: '/dashboard/home'
-    },
+  {
+    path: "/",
+    redirect: "/dashboard/home",
+  },
 
-    // AUTH
-    {
-        path: '/login',
-        name: 'login',
-        component: () => import('../views/auth/LoginView.vue'),
-        meta: {
-            guest: true
-        }
+  // AUTH
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("../views/auth/LoginView.vue"),
+    meta: {
+      guest: true,
     },
-    {
-        path: '/register',
-        name: 'register',
-        component: () => import('../views/auth/RegisterView.vue'),
-        meta: {
-            guest: true
-        }
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("../views/auth/RegisterView.vue"),
+    meta: {
+      guest: true,
     },
-    {
-        path: '/confirm-email/:email',
-        name: 'confirm-email',
-        component: () => import('../views/auth/ConfirmEmailView.vue'),
-        meta: {
-            guest: true
-        }
+  },
+  {
+    path: "/confirm-email/:email",
+    name: "confirm-email",
+    component: () => import("../views/auth/ConfirmEmailView.vue"),
+    meta: {
+      guest: true,
     },
+  },
 
-    // DASHBOARD
-    {
-        path: '/dashboard',
-        component: () => import('../layouts/DashboardLayout.vue'),
-        meta: {
-            //requiresAuth: true
-        },
-        children: [
-            {
-                path: '',
-                redirect: '/dashboard/home'
-            },
-            {
-                path: 'home',
-                name: 'home',
-                component: () => import('../views/dashboard/HomeView.vue')
-            },
-            {
-                path: 'matches',
-                name: 'matches',
-                component: () => import('../views/dashboard/MatchesView.vue')
-            },
-            {
-                path: 'predictions',
-                name: 'predictions',
-                component: () => import('../views/dashboard/PredictionsView.vue')
-            },
-            {
-                path: 'profile',
-                name: 'profile',
-                component: () => import('../views/dashboard/ProfileView.vue')
-            }
-        ]
+  // DASHBOARD
+  {
+    path: "/dashboard",
+    component: () => import("../layouts/DashboardLayout.vue"),
+    meta: {
+      //requiresAuth: true
     },
+    children: [
+      {
+        path: "",
+        redirect: "/dashboard/home",
+      },
+      {
+        path: "home",
+        name: "home",
+        component: () => import("../views/dashboard/HomeView.vue"),
+      },
+      {
+        path: "matches",
+        name: "matches",
+        component: () => import("../views/dashboard/MatchesView.vue"),
+      },
+      {
+        path: "predictions",
+        name: "predictions",
+        component: () => import("../views/dashboard/PredictionsView.vue"),
+      },
+      {
+        path: "profile",
+        name: "profile",
+        component: () => import("../views/dashboard/ProfileView.vue"),
+      },
+      {
+        path: "groups/:id",
+        name: "group-details",
+        component: () => import("../views/dashboard/GroupDetailsView.vue"),
+      },
+    ],
+  },
 
-    {
-        path: '/:pathMatch(.*)*',
-        redirect: '/dashboard/home'
-    }
-]
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/dashboard/home",
+  },
+];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
-})
+  history: createWebHistory(),
+  routes,
+});
 
 router.beforeEach((to, _from, next) => {
-    const authStore = useAuthStore()
+  const authStore = useAuthStore();
 
-    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-        return next('/login')
-    }
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    return next("/login");
+  }
 
-    if (to.meta.guest && authStore.isAuthenticated) {
-        return next('/dashboard/home')
-    }
+  if (to.meta.guest && authStore.isAuthenticated) {
+    return next("/dashboard/home");
+  }
 
-    next()
-})
+  next();
+});
 
-export default router
+export default router;

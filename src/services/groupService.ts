@@ -11,8 +11,8 @@ export const groupService = {
         return response.data
     },
 
-    async getGroup(id: string): Promise<Group> {
-        const response = await api.get(`${id}/groups`)
+    async getGroup(groupId: string): Promise<Group> {
+        const response = await api.get(`groups/${groupId}`)
         return response.data
     },
 

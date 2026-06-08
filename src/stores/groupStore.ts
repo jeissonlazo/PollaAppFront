@@ -83,7 +83,7 @@ export const useGroupStore = defineStore(
                 )
 
                 groups.value = groups.value.filter(
-                    g => g.id !== groupId
+                    g => g.group_id !== groupId
                 )
 
             } finally {

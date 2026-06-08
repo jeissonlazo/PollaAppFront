@@ -36,9 +36,8 @@ const loadGroups = async () => {
 }
 
 const openGroup = (groupId: string) => {
-    router.push(`/groups/${groupId}`)
+    router.push(`/dashboard/groups/${groupId}`)
 }
-
 const handleCreateGroup = () => {
     showCreateDialog.value = true
 }
@@ -87,12 +86,12 @@ onMounted(loadGroups)
             >
                 <NGridItem
                     v-for="group in localGroups"
-                    :key="group.id"
+                    :key="group.group_id"
                 >
                     <NCard
                         hoverable
                         class="group-card"
-                        @click="openGroup(group.id)"
+                        @click="openGroup(group.group_id)"
                     >
                         <div class="card-content">
 
