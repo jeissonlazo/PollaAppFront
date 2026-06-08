@@ -10,7 +10,6 @@ import {
 } from 'naive-ui'
 
 const value = ref(0)
-const disabled = ref(true)
 const matchesStore = useMatchesStore()
 
 const predictions = ref<MatchPrediction[]>([])
