@@ -1,3 +1,4 @@
+import { type Team } from './Team'
 export interface MatchPrediction {
     match_id: string
     round: string
@@ -10,6 +11,8 @@ export interface MatchPrediction {
 
     team1_id: string
     team1_name: string
+    team1: Team | null
+    team2: Team | null
 
     team2_id: string
     team2_name: string

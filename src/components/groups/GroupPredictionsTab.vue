@@ -6,10 +6,10 @@ import {
     NDataTable,
     NInputNumber,
     NTag,
+    NImage,
     type DataTableColumns
 } from 'naive-ui'
 
-const value = ref(0)
 const matchesStore = useMatchesStore()
 
 const predictions = ref<MatchPrediction[]>([])
@@ -34,7 +34,7 @@ const columns: DataTableColumns<MatchPrediction> = [
         title: 'Partido',
         key: 'match',
         render(row) {
-            return `${row.team1_name} vs ${row.team2_name}`
+            return `${row.team1?.country || 'TBD'} vs ${row.team2?.country || 'TBD'}`
         }
     },
 
@@ -59,15 +59,22 @@ const columns: DataTableColumns<MatchPrediction> = [
                     `
                 },
                 [
+
+                    h(NImage,
+                        {
+                            src: row.team1?.flag,
+                            width: 24,
+                        },
+                    ),
                     h(NInputNumber, {
                         value: row.score_team1,
 
                         min: 0,
                         max: 20,
-                        'show-buttons': false,
+                        'show-button': false,
                         disabled: row.finish,
 
-                        style: 'width:70px',
+                        style: 'width:40px',
 
                         'onUpdate:value': (
                             value: number | null
@@ -86,15 +93,23 @@ const columns: DataTableColumns<MatchPrediction> = [
                         value: row.score_team2,
                         min: 0,
                         max: 20,
-                        'show-buttons': false,
+                        'show-button': false,
+                        'button-placement': "both",
                         disabled: row.finish,
-                        style: 'width:70px',
+                        style: 'width:40px',
                         'onUpdate:value': (
                             value: number | null
                         ) => {
                             row.score_team2 = value
                         }
-                    })
+                    }),
+
+                    h(NImage,
+                        {
+                            src: row.team2?.flag,
+                            width: 24,
+                        },
+                    )
                 ]
             )
         }
@@ -141,9 +156,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <n-space align="center">
-    <n-input-number v-model:value="value" :show-buttons="false" button-placement="right" />
-  </n-space>
     <NDataTable
         :columns="columns"
         :data="predictions"
