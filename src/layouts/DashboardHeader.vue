@@ -7,7 +7,7 @@ import {
     NButton,
     NIcon
 } from 'naive-ui'
-
+import AdminMenu from './AdminMenu.vue'
 import { User, LogOut, Settings2 } from '@lucide/vue';
 import { useAuthStore } from '../stores/authStore'
 const router = useRouter()
@@ -76,7 +76,12 @@ const handleSelect = (key: string) => {
             </span>
         </div>
 
+        
         <div class="actions">
+            
+            <AdminMenu
+                v-if="authStore.isGlobalAdmin"
+            />
 
             <NDropdown
                 trigger="click"
@@ -128,5 +133,6 @@ const handleSelect = (key: string) => {
 .actions {
     display: flex;
     align-items: center;
+    gap: 16px;
 }
 </style>

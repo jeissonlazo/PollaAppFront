@@ -5,7 +5,7 @@ import type ConfirmationEmailRequest from "../interfaces/ConfirmationEmailInterf
 import type { User } from "../interfaces/LoginInterface";
 export const useAuthStore = defineStore("auth", () => {
   const token = ref<string | null>(localStorage.getItem("token"));
-
+  const isGlobalAdmin = ref<boolean>(true);
   const loading = ref(false);
 
   const isAuthenticated = computed(() => !!token.value);
@@ -71,6 +71,7 @@ export const useAuthStore = defineStore("auth", () => {
     loading,
     isAuthenticated,
     user,
+    isGlobalAdmin,
     login,
     logout,
     register,

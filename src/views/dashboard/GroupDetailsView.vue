@@ -73,7 +73,7 @@ onMounted(loadGroup)
                     name="predictions"
                     tab="Pronósticos"
                 >
-                  <GroupPredictionsTab />
+                    <GroupPredictionsTab :group_id="groupId" />
                 </NTabPane>
 
                 <!-- POSICIONES -->

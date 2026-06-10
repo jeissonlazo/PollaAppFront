@@ -70,9 +70,26 @@ const routes = [
         name: "group-details",
         component: () => import("../views/dashboard/GroupDetailsView.vue"),
       },
+
+      {
+        path: "admin",
+        children: [
+          {
+            path: "",
+            name: "admin-home",
+            component: () =>
+              import("../views/dashboard/admin/AdminHomeView.vue"),
+          },
+          {
+            path: "matches",
+            name: "admin-matches",
+            component: () =>
+              import("../views/dashboard/admin/MatchManagementView.vue"),
+          },
+        ],
+      },
     ],
   },
-
   {
     path: "/:pathMatch(.*)*",
     redirect: "/dashboard/home",

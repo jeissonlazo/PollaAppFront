@@ -2,6 +2,8 @@
 import { h, onMounted, ref } from 'vue'
 import type { MatchPrediction } from "../../interfaces/MatchPrediction.ts";
 import { useMatchesStore } from '../../stores/MatchesStore.ts'
+import { usePredictionStore } from '../../stores/predictionStore.ts'
+import { useAuthStore } from '../../stores/authStore.ts'
 import {
     NDataTable,
     NInputNumber,
@@ -10,19 +12,31 @@ import {
     type DataTableColumns
 } from 'naive-ui'
 
+const props = defineProps<{
+    group_id: string
+}>()
 const matchesStore = useMatchesStore()
+const predictionStore = usePredictionStore()
+const authStore = useAuthStore()
 
 const predictions = ref<MatchPrediction[]>([])
 
 const columns: DataTableColumns<MatchPrediction> = [
     {
         title: 'Fecha',
-        key: 'match_date'
+        key: 'match_date',
+
+        render(row) {
+            return formatDate(row.match_date)
+        },
     },
 
     {
         title: 'Hora',
-        key: 'time'
+        key: 'time',
+        render(row) {
+            return row.time.substring(0, 5)
+        }
     },
 
     {
@@ -146,8 +160,17 @@ const columns: DataTableColumns<MatchPrediction> = [
 
 const loadPredictions = async () => {
     await matchesStore.loadMatches()
+    await predictionStore.loadPredictions(props.group_id, authStore.user?.id || '')
 
     predictions.value = matchesStore.matches
+}
+
+function formatDate(date: string) {
+    return new Date(date).toLocaleDateString('es-CO', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    })
 }
 
 onMounted(() => {

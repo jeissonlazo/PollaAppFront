@@ -10,10 +10,19 @@ export const useMatchesStore = defineStore("matches", () => {
 
   async function loadMatches() {
     loading.value = true;
+
     try {
       matches.value = await matchesService.getMatches();
+
+      matches.value.sort((a, b) => {
+        const dateA = new Date(a.match_date);
+        const dateB = new Date(b.match_date);
+        return dateA.getTime() - dateB.getTime();
+      });
     } catch (error) {
       console.error("Error loading matches:", error);
+    } finally {
+      loading.value = false;
     }
   }
 
