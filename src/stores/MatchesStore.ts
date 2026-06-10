@@ -26,9 +26,22 @@ export const useMatchesStore = defineStore("matches", () => {
     }
   }
 
+  async function updateMatch(matchData: MatchPrediction) {
+    try {
+      const updatedMatch = await matchesService.updateMatch({...matchData});
+      const index = matches.value.findIndex((match) => match.match_id === matchData.match_id);
+      if (index !== -1) {
+        matches.value[index] = updatedMatch;
+      }
+    } catch (error) {
+      console.error("Error updating match prediction:", error);
+    }
+  }
+
   return {
     loading,
     matches,
     loadMatches,
+    updateMatch
   };
 });

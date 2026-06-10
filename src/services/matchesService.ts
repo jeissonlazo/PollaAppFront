@@ -6,4 +6,9 @@ export const matchesService = {
     const response = await api.get(`matches`);
     return response.data;
   },
+
+  async updateMatch(matchData: MatchPrediction): Promise<MatchPrediction> {
+    const response = await api.put(`matches/${matchData.match_id}/`, matchData);
+    return response.data;
+  }
 };

@@ -3,6 +3,7 @@ import { h, onMounted, ref } from 'vue'
 import { useMatchesStore } from '../../../stores/MatchesStore'
 import { NH2, NDataTable, NButton, type DataTableColumns } from 'naive-ui'
 import EditMatchDialog from '../../../components/admin/EditMatchDialog.vue'
+import type { MatchPrediction } from '../../../interfaces/MatchPrediction.ts'
 const matchesStore = useMatchesStore()
 const editDialogVisible = ref(false)
 const selectedMatch = ref<any>(null)
@@ -63,12 +64,18 @@ function openEditDialog(match: any) {
     selectedMatch.value = match
     editDialogVisible.value = true
 }
+
 function formatDate(date: string) {
     return new Date(date).toLocaleDateString('es-CO', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
     })
+}
+
+function updateMatch(updatedMatch: MatchPrediction) {
+    console.log('Updated Match:', updatedMatch)
+    matchesStore.updateMatch(updatedMatch)
 }
 
 
@@ -88,5 +95,6 @@ onMounted(() => {
     <EditMatchDialog
         v-model:show="editDialogVisible"
         :match="selectedMatch"
+        @update-match="updateMatch"
     />
 </template>

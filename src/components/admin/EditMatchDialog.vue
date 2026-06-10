@@ -24,7 +24,7 @@ const props = defineProps<{
 
 const emit = defineEmits([
     'update:show',
-    'save'
+    'update-match'
 ])
 
 const showDialog = computed({
@@ -72,7 +72,7 @@ const teamOptions = computed(() => {
 
 function handleSave() {
 
-    emit('save', {
+    emit('update-match', {
         ...props.match,
         ...form
     })

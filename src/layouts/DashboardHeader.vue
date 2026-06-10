@@ -64,17 +64,17 @@ const handleSelect = (key: string) => {
 <template>
     <header class="header">
 
-        <div class="brand">
-            <img
+            <RouterLink to="/" class="brand">
+                <img
                 src="@/assets/logo.svg"
                 alt="Pollapp"
                 class="logo"
-            />
-
-            <span class="title">
-                Pollapp
-            </span>
-        </div>
+                />
+                
+                <span class="title">
+                    Pollapp
+                </span>
+            </RouterLink>
 
         
         <div class="actions">
@@ -118,6 +118,7 @@ const handleSelect = (key: string) => {
     display: flex;
     align-items: center;
     gap: 12px;
+    text-decoration: none;
 }
 
 .logo {

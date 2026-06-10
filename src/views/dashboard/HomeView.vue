@@ -14,13 +14,14 @@ import { useGroupStore } from '../../stores/groupStore'
 import type { Group } from '../../interfaces/group'
 import { useAuthStore } from '../../stores/authStore'
 import CreateGroupDialog from '../../components/CreateGroupDialog.vue'
+import JoinGroupDialog from '../../components/groups/JoinGroupDialog.vue'
 const groupStore = useGroupStore()
 const showCreateDialog = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
 
 const localLoading = ref(false)
-
+const showJoinDialog = ref(false)
 const localGroups = ref<Group[]>([])
 
 const loadGroups = async () => {
@@ -43,7 +44,7 @@ const handleCreateGroup = () => {
 }
 
 const handleJoinGroup = () => {
-    router.push('/dashboard/groups/join')
+    showJoinDialog.value = true
 }
 onMounted(loadGroups)
 </script>
@@ -115,6 +116,7 @@ onMounted(loadGroups)
             </NGrid>
         </NSpin>
         <CreateGroupDialog v-model:show="showCreateDialog" />
+        <JoinGroupDialog v-model:show="showJoinDialog" />
     </div>
 </template>
 

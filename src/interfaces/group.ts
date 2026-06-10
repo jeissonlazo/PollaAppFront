@@ -6,11 +6,12 @@ export interface Group {
     admin_id: string
     users_limit: number
     description?: string
-    observations?: string
+    observations?: string,
+    invite_code?: string
 }
 
 export interface GroupDetails {
-    id: string
+    group_id: string
     name: string
     description?: string
     observations?: string
@@ -25,6 +26,17 @@ export interface GroupDetails {
 }
 
 export interface CreateGroupRequest {
+    name: string
+    tournament_id: string,
+    description?: string
+    observations?: string
+    users_limit?: number,
+    admin_id: string,
+    invite_code?: string
+}
+
+export interface CreateGroupResponse {
+    group_id: string
     name: string
     tournament_id: string,
     description?: string
