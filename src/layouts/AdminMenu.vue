@@ -50,22 +50,18 @@ function handleSelect(key: string) {
 
   switch (key) {
     case 'matches':
-      console.log('Redirigiendo a administración de partidos')
       router.push('/dashboard/admin/matches')
       break
 
     case 'tournaments':
-      console.log('Redirigiendo a administración de torneos')
       router.push('/dashboard/admin/tournaments')
       break
 
     case 'teams':
-      console.log('Redirigiendo a administración de equipos')
       router.push('/dashboard/admin/teams')
       break
 
     case 'users':
-      console.log('Redirigiendo a administración de usuarios')
       router.push('/dashboard/admin/users')
       break
   }

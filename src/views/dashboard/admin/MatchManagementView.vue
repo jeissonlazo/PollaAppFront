@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { h, onMounted, ref } from 'vue'
 import { useMatchesStore } from '../../../stores/MatchesStore'
-import { NH2, NDataTable, NButton, type DataTableColumns } from 'naive-ui'
+import { NH2, NDataTable, NButton, type DataTableColumns,NImage } from 'naive-ui'
 import EditMatchDialog from '../../../components/admin/EditMatchDialog.vue'
 import type { MatchPrediction } from '../../../interfaces/MatchPrediction.ts'
 const matchesStore = useMatchesStore()
@@ -27,7 +27,32 @@ const columns: DataTableColumns<any> = [
         title: 'Partido',
         key: 'match',
         render(row) {
-            return `${row.team1?.country || 'TBD'} vs ${row.team2?.country || 'TBD'}`
+            return h(
+                'div',
+                {
+                    style: `
+                        display:flex;
+                        align-items:center;
+                        gap:8px;
+                    `
+                },
+                [
+
+                    h(NImage, {
+                        src: row.team1?.flag || '',
+                        width: 24,
+                        height: 16,
+                        style: 'margin-right: 8px;'
+                    }),
+                    `${row.team1?.country || 'TBD'} vs ${row.team2?.country || 'TBD'}`,
+                    h(NImage, {
+                        src: row.team2?.flag || '',
+                        width: 24,
+                        height: 16,
+                        style: 'margin-left: 8px;'
+                    })
+                ]
+            )
         }
     },
 
@@ -74,7 +99,6 @@ function formatDate(date: string) {
 }
 
 function updateMatch(updatedMatch: MatchPrediction) {
-    console.log('Updated Match:', updatedMatch)
     matchesStore.updateMatch(updatedMatch)
 }
 

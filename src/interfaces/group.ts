@@ -45,3 +45,8 @@ export interface CreateGroupResponse {
     admin_id: string,
     invite_code?: string
 }
+
+export interface JoinGroupRequest {
+    invite_code: string
+    user_id: string
+}

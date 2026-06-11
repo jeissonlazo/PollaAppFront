@@ -10,18 +10,18 @@ import {
 } from 'naive-ui'
 
 const props = defineProps<{
-  show: boolean
+  show: boolean,
+  urlCode: string | undefined
 }>()
 
 const emit = defineEmits<{
   'update:show': [value: boolean]
-  join: [code: string]
+  'join': [code: string]
 }>()
 
 const message = useMessage()
 
 const code = ref<string[]>([])
-
 const showDialog = computed({
   get: () => props.show,
   set: value => emit('update:show', value)
@@ -35,20 +35,30 @@ function handleJoin() {
     message.warning('Ingresa el código completo')
     return
   }
-
   emit('join', referralCode)
 
+  resetCode()
   showDialog.value = false
 }
 
 onMounted(() => {
-  code.value = []
+  if (props.urlCode) {
+    code.value = props.urlCode.split('')
+    showDialog.value = true
+  } else {
+    code.value = []
+  }
 })
+
+function resetCode() {
+  code.value = []
+}
+
 </script>
 
 <template>
 
-  <NModal v-model:show="showDialog">
+  <NModal v-model:show="showDialog" :mask-closable="false">
 
     <NCard title="Unirse a un Grupo" style="width: 450px" :bordered="false">
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import {
     NCard,
     NGrid,
@@ -8,7 +8,9 @@ import {
     NH2,
     NText,
     NEmpty,
-    NSpin
+    NSpin,
+    useMessage
+
 } from 'naive-ui'
 import { useGroupStore } from '../../stores/groupStore'
 import type { Group } from '../../interfaces/group'
@@ -19,11 +21,13 @@ const groupStore = useGroupStore()
 const showCreateDialog = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
+const route = useRoute()
+const message = useMessage()
 
 const localLoading = ref(false)
 const showJoinDialog = ref(false)
 const localGroups = ref<Group[]>([])
-
+const code = route.params.code as string | undefined
 const loadGroups = async () => {
     localLoading.value = true
     try {
@@ -46,7 +50,38 @@ const handleCreateGroup = () => {
 const handleJoinGroup = () => {
     showJoinDialog.value = true
 }
-onMounted(loadGroups)
+
+const handleJoinWithCode = async () => {
+    if (!code) return
+    showJoinDialog.value = true
+}
+
+const handleGroupJoined = async (inviteCode: string) => {
+    if (!code) return
+    if (!authStore.user) return
+    try {
+        await groupStore.joinGroup(inviteCode, authStore.user.id)
+        message.success('¡Te has unido al grupo exitosamente!')
+        removePathParam()
+    }
+    catch {
+        message.error('No fue posible unirse al grupo con el código proporcionado')
+    }
+    finally {
+        loadGroups()
+    }
+}
+
+const removePathParam = () => {
+    router.replace({
+        name: 'home',
+        params: {}
+    })
+}
+onMounted(() => {
+    loadGroups()
+    handleJoinWithCode()
+})
 </script>
 
 <template>
@@ -55,17 +90,11 @@ onMounted(loadGroups)
         <div class="header">
             <NH2>Mis Grupos</NH2>
             <div class="actions">
-                <NButton
-                    type="primary"
-                    @click="handleCreateGroup"
-                >
+                <NButton type="primary" @click="handleCreateGroup">
                     Crear Grupo
                 </NButton>
 
-                <NButton
-                    secondary
-                    @click="handleJoinGroup"
-                >
+                <NButton secondary @click="handleJoinGroup">
                     Unirse a un Grupo
                 </NButton>
             </div>
@@ -73,27 +102,11 @@ onMounted(loadGroups)
 
         <NSpin :show="localLoading">
 
-            <NEmpty
-                v-if="localGroups.length === 0"
-                description="No perteneces a ningún grupo"
-            />
+            <NEmpty v-if="localGroups.length === 0" description="No perteneces a ningún grupo" />
 
-            <NGrid
-                v-else
-                cols="1 s:2 m:3 l:4"
-                responsive="screen"
-                :x-gap="16"
-                :y-gap="16"
-            >
-                <NGridItem
-                    v-for="group in localGroups"
-                    :key="group.group_id"
-                >
-                    <NCard
-                        hoverable
-                        class="group-card"
-                        @click="openGroup(group.group_id)"
-                    >
+            <NGrid v-else cols="1 s:2 m:3 l:4" responsive="screen" :x-gap="16" :y-gap="16">
+                <NGridItem v-for="group in localGroups" :key="group.group_id">
+                    <NCard hoverable class="group-card" @click="openGroup(group.group_id)">
                         <div class="card-content">
 
                             <NText depth="3">
@@ -116,7 +129,7 @@ onMounted(loadGroups)
             </NGrid>
         </NSpin>
         <CreateGroupDialog v-model:show="showCreateDialog" />
-        <JoinGroupDialog v-model:show="showJoinDialog" />
+        <JoinGroupDialog v-model:show="showJoinDialog" :url-code="code" @join="handleGroupJoined" />
     </div>
 </template>
 

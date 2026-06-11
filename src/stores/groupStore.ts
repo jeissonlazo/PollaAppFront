@@ -50,8 +50,16 @@ export const useGroupStore = defineStore("groups", () => {
 
     try {
       await groupService.deleteGroup(groupId);
-
       groups.value = groups.value.filter((g) => g.group_id !== groupId);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function joinGroup(invite_code: string, user_id: string) {
+    loading.value = true;
+    try {
+      await groupService.joinGroup(invite_code, user_id);
     } finally {
       loading.value = false;
     }
@@ -65,5 +73,6 @@ export const useGroupStore = defineStore("groups", () => {
     loadGroup,
     createGroup,
     deleteGroup,
+    joinGroup
   };
 });

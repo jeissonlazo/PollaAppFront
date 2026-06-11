@@ -46,6 +46,11 @@ const routes = [
         redirect: "/dashboard/home",
       },
       {
+        path: "home/:code?",
+        name: "home_code",
+        component: () => import("../views/dashboard/HomeView.vue"),
+      },
+      {
         path: "home",
         name: "home",
         component: () => import("../views/dashboard/HomeView.vue"),

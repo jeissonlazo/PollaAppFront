@@ -29,5 +29,12 @@ export const groupService = {
 
     async deleteGroup(id: string) {
         await api.delete(`/groups/${id}`)
+    },
+
+    async joinGroup(invite_code: string, user_id: string) {
+        await api.post('/groups/join', {
+            invite_code,
+            user_id
+        })
     }
 }
