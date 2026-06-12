@@ -32,6 +32,14 @@ const routes = [
       guest: true,
     },
   },
+  {
+    path: "/forgot-password",
+    name: "forgot-password",
+    component: () => import("../views/auth/ForgotPasswordView.vue"),
+    meta:{
+      guest:true
+    }
+  },
 
   // DASHBOARD
   {

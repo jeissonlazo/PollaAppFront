@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
     NCard,
@@ -37,6 +37,14 @@ const handleLogin = async () => {
 const handleRegister = () => {
     router.push('/register')
 }
+
+const handleForgotPassword = () => {
+    router.push('/forgot-password')
+}
+
+const disabled = computed(() => {
+    return !usernameOrEmail.value || !password.value || authStore.loading
+})
 </script>
 
 <template>
@@ -57,12 +65,17 @@ const handleRegister = () => {
                         placeholder="Ingresa tu contraseña" />
                 </NFormItem>
 
-                <NButton type="primary" block :loading="authStore.loading" @click="handleLogin">
+                <NButton type="primary" block :disabled="disabled" :loading="authStore.loading" @click="handleLogin">
                     Iniciar Sesión
                 </NButton>
 
                 <NButton block style="margin-top: 24px;" :loading="authStore.loading" @click="handleRegister">
                     Crear Cuenta
+                </NButton>
+
+
+                <NButton block style="margin-top: 24px;" :loading="authStore.loading" @click="handleForgotPassword">
+                    Olvide mi contraseña
                 </NButton>
 
             </NForm>

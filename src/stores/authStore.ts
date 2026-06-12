@@ -10,7 +10,9 @@ export const useAuthStore = defineStore("auth", () => {
 
   const isAuthenticated = computed(() => !!token.value);
 
-  const user = ref<User | null>(JSON.parse(localStorage.getItem("user") || "null"));
+  const user = ref<User | null>(
+    JSON.parse(localStorage.getItem("user") || "null"),
+  );
 
   async function register(payload: RegisterRequest) {
     loading.value = true;
@@ -44,15 +46,48 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
-  async function confirmEmail(confirmationCode:ConfirmationEmailRequest) {
+  async function confirmEmail(confirmationCode: ConfirmationEmailRequest) {
     loading.value = true;
 
     try {
       const response = await authService.confirmEmail({
         email: confirmationCode.email,
-        code: confirmationCode.code
+        code: confirmationCode.code,
       });
 
+      return response.data;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function sendRecoveryCode(email: string) {
+    loading.value = true;
+
+    try {
+      const response = await authService.sendRecoveryCode(email);
+      return response.data;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function validateRecoveryCode(email: string, code: string) {
+    loading.value = true;
+
+    try {
+      const response = await authService.validateRecoveryCode(email, code);
+      return response.data;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function changePassword( email: string, code: string, password : string) {
+    loading.value = true;
+
+    try {
+      const response = await authService.changePassword(email, code, password);
       return response.data;
     } finally {
       loading.value = false;
@@ -75,6 +110,9 @@ export const useAuthStore = defineStore("auth", () => {
     login,
     logout,
     register,
-    confirmEmail
+    confirmEmail,
+    sendRecoveryCode,
+    validateRecoveryCode,
+    changePassword
   };
 });

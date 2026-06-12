@@ -21,6 +21,18 @@ export const authService = {
     },
     async confirmEmail(payload: ConfirmationEmailRequest) {
         return api.post('/auth/verify-email', payload)
+    },
+
+    async sendRecoveryCode(email: string) {
+        return api.post('/auth/send-recovery-code', { usernameOrEmail:email })
+    },
+
+    async validateRecoveryCode(email: string, code: string) {
+        return api.post('/auth/validate-recovery-code', { usernameOrEmail: email, code })
+    },
+    
+    async changePassword(email: string, code: string, password: string) {
+        return api.post('/auth/reset-password', { usernameOrEmail: email, code, new_password:password })
     }
 }
 
