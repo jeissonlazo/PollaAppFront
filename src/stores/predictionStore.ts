@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { predictionService } from "../services/predictionService.ts";
 import { type UserPredictions } from "../interfaces/MatchPrediction.ts";
-import type { Prediction } from "../interfaces/predictions.ts";
 export const usePredictionStore = defineStore("predictions", () => {
   const loading = ref(false);
   const predictions = ref<UserPredictions>({ user_id: '', group_id: '', predictions: [] });

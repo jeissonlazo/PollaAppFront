@@ -2,11 +2,11 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 import { matchesService } from "../services/matchesService.ts";
-import type { MatchPrediction } from "../interfaces/MatchPrediction.ts";
+import type { Match } from "../interfaces/MatchPrediction.ts";
 
 export const useMatchesStore = defineStore("matches", () => {
   const loading = ref(false);
-  const matches = ref<MatchPrediction[]>([]);
+  const matches = ref<Match[]>([]);
 
   async function loadMatches() {
     loading.value = true;
@@ -26,7 +26,7 @@ export const useMatchesStore = defineStore("matches", () => {
     }
   }
 
-  async function updateMatch(matchData: MatchPrediction) {
+  async function updateMatch(matchData: Match) {
     try {
       const updatedMatch = await matchesService.updateMatch({...matchData});
       const index = matches.value.findIndex((match) => match.match_id === matchData.match_id);

@@ -12,14 +12,14 @@ import {
     NImage
 } from 'naive-ui'
 
-import type { MatchPrediction } from '../../interfaces/MatchPrediction.ts'
+import type { Match } from '../../interfaces/MatchPrediction.ts'
 import { type Team } from '../../interfaces/Team.ts'
 import { useTeamStore } from '../../stores/TeamStore.ts'
 
 const teamStore = useTeamStore()
 const props = defineProps<{
     show: boolean
-    match: MatchPrediction | null
+    match: Match | null
 }>()
 
 const emit = defineEmits([

@@ -3,7 +3,7 @@ import { h, onMounted, ref } from 'vue'
 import { useMatchesStore } from '../../../stores/MatchesStore'
 import { NH2, NDataTable, NButton, type DataTableColumns,NImage } from 'naive-ui'
 import EditMatchDialog from '../../../components/admin/EditMatchDialog.vue'
-import type { MatchPrediction } from '../../../interfaces/MatchPrediction.ts'
+import type { Match } from '../../../interfaces/MatchPrediction.ts'
 const matchesStore = useMatchesStore()
 const editDialogVisible = ref(false)
 const selectedMatch = ref<any>(null)
@@ -98,7 +98,7 @@ function formatDate(date: string) {
     })
 }
 
-function updateMatch(updatedMatch: MatchPrediction) {
+function updateMatch(updatedMatch: Match) {
     matchesStore.updateMatch(updatedMatch)
 }
 
