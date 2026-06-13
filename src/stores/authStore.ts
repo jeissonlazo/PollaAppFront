@@ -5,7 +5,7 @@ import type ConfirmationEmailRequest from "../interfaces/ConfirmationEmailInterf
 import type { User } from "../interfaces/LoginInterface";
 export const useAuthStore = defineStore("auth", () => {
   const token = ref<string | null>(localStorage.getItem("token"));
-  const isGlobalAdmin = ref<boolean>(true);
+  const isGlobalAdmin = ref<boolean>(false);
   const loading = ref(false);
 
   const isAuthenticated = computed(() => !!token.value);
@@ -39,7 +39,9 @@ export const useAuthStore = defineStore("auth", () => {
 
       localStorage.setItem("token", response.access_token);
       localStorage.setItem("user", JSON.stringify(response.user));
-
+      if(response.user.roles.includes(3)) { // Assuming 3 represents global admin role
+        isGlobalAdmin.value = true;
+      }
       return true;
     } finally {
       loading.value = false;
