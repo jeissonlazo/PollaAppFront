@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { h, onMounted, ref } from 'vue'
-import type { Match, UserPredictions, MatchUserPrediction } from "../../interfaces/MatchPrediction.ts";
-import { useMatchesStore } from '../../stores/MatchesStore.ts'
-import { usePredictionStore } from '../../stores/predictionStore.ts'
-import { useAuthStore } from '../../stores/authStore.ts'
+import type { Match, UserPredictions, MatchUserPrediction } from "../../../interfaces/MatchPrediction.ts";
+import { useMatchesStore } from '../../../stores/MatchesStore.ts'
+import { usePredictionStore } from '../../../stores/predictionStore.ts'
+import { useAuthStore } from '../../../stores/authStore.ts'
 import {
     NDataTable,
     NInputNumber,

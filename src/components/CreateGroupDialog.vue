@@ -154,8 +154,6 @@ const handleCancel = () => {
                 <p>Grupo creado con éxito. Comparte el siguiente código para que otros puedan unirse:</p>
                 <div class="code-container" style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
                     <n-h1 style="font-weight: bold;">{{ groupCode }}</n-h1>
-                    
-                    
 
                     <n-popover trigger="hover">
                         <template #trigger>

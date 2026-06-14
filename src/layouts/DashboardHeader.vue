@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { h } from 'vue'
+import { h, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
     NAvatar,
     NDropdown,
     NButton,
-    NIcon
+    NIcon,
+    type MenuOption
 } from 'naive-ui'
 import AdminMenu from './AdminMenu.vue'
 import { User, LogOut, Settings2 } from '@lucide/vue';
 import { useAuthStore } from '../stores/authStore'
 const router = useRouter()
 const authStore = useAuthStore()
-
+const activeKey = ref<string | null>(null)
 const options = [
     {
         label: 'Mi Perfil',
@@ -41,6 +42,21 @@ const options = [
     }
 ]
 
+const menuOptions: MenuOption[] = [
+    {
+        label: 'Dashboard',
+        key: 'dashboard'
+    },
+    {
+        label: 'Mis Encuestas',
+        key: 'my-polls'
+    },
+    {
+        label: 'Crear Encuesta',
+        key: 'create-poll'
+    }
+]
+
 const handleSelect = (key: string) => {
 
     switch (key) {
@@ -64,30 +80,26 @@ const handleSelect = (key: string) => {
 <template>
     <header class="header">
 
-            <RouterLink to="/" class="brand">
-                <img
-                src="@/assets/logo.svg"
-                alt="Pollapp"
-                class="logo"
-                />
-                
-                <span class="title">
-                    Pollapp
-                </span>
-            </RouterLink>
+        <RouterLink to="/" class="brand">
+            <img src="@/assets/logo.svg" alt="Pollapp" class="logo" />
 
-        
+            <span class="title">
+                Pollapp
+            </span>
+        </RouterLink>
+
+
         <div class="actions">
-            
-            <AdminMenu
-                v-if="authStore.isGlobalAdmin"
-            />
 
-            <NDropdown
-                trigger="click"
-                :options="options"
-                @select="handleSelect"
-            >
+            <AdminMenu v-if="authStore.isGlobalAdmin" />
+
+            <n-split :default-size="0.8">
+                <template #1>
+                    <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" responsive />
+                </template>
+            </n-split>
+
+            <NDropdown trigger="click" :options="options" @select="handleSelect">
                 <NButton quaternary>
                     <NAvatar round size="small">
                         <User />

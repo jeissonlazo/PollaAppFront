@@ -9,13 +9,12 @@ import {
     NTabPane,
     NH2,
     NText,
-    NDescriptions,
-    NDescriptionsItem
 } from 'naive-ui'
 
-import { useAuthStore } from '../../stores/authStore'
-import { useGroupStore } from '../../stores/groupStore'
-import GroupPredictionsTab from '../../components/groups/GroupPredictionsTab.vue'
+import { useAuthStore } from '../../../stores/authStore.ts'
+import { useGroupStore } from '../../../stores/groupStore.ts'
+import GroupPredictionsTab from './GroupPredictionsTab.vue'
+import GroupDescription from './GroupDescription.vue'
 const route = useRoute()
 
 const authStore = useAuthStore()
@@ -93,69 +92,7 @@ onMounted(loadGroup)
                     name="info"
                     tab="Información"
                 >
-                    <NCard>
-
-                        <NDescriptions
-                            label-placement="left"
-                            bordered
-                            :column="1"
-                        >
-
-                            <NDescriptionsItem
-                                label="Evento"
-                            >
-                                {{
-                                    groupStore
-                                        .selectedGroup
-                                        .eventName
-                                }}
-                            </NDescriptionsItem>
-
-                            <NDescriptionsItem
-                                label="Participantes"
-                            >
-                                {{
-                                    groupStore
-                                        .selectedGroup
-                                        .members
-                                }}
-                            </NDescriptionsItem>
-
-                            <NDescriptionsItem
-                                label="Límite"
-                            >
-                                {{
-                                    groupStore
-                                        .selectedGroup
-                                        .users_limit
-                                }}
-                            </NDescriptionsItem>
-
-                            <NDescriptionsItem
-                                label="Descripción"
-                            >
-                                {{
-                                    groupStore
-                                        .selectedGroup
-                                        .description ||
-                                    'Sin descripción'
-                                }}
-                            </NDescriptionsItem>
-
-                            <NDescriptionsItem
-                                label="Observaciones"
-                            >
-                                {{
-                                    groupStore
-                                        .selectedGroup
-                                        .observations ||
-                                    'Sin observaciones'
-                                }}
-                            </NDescriptionsItem>
-
-                        </NDescriptions>
-
-                    </NCard>
+                    <GroupDescription :group="groupStore.selectedGroup" />
                 </NTabPane>
 
                 <!-- ADMIN -->

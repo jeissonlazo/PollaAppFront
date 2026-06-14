@@ -81,7 +81,7 @@ const routes = [
       {
         path: "groups/:id",
         name: "group-details",
-        component: () => import("../views/dashboard/GroupDetailsView.vue"),
+        component: () => import("../views/dashboard/groups/GroupDetailsView.vue"),
       },
 
       {
