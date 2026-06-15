@@ -27,7 +27,7 @@ const showDialog = computed({
   set: value => emit('update:show', value)
 })
 
-function handleJoin() {
+async function handleJoin() {
 
   const referralCode = code.value.join('')
 
@@ -35,7 +35,7 @@ function handleJoin() {
     message.warning('Ingresa el código completo')
     return
   }
-  emit('join', referralCode)
+  await emit('join', referralCode)
 
   resetCode()
   showDialog.value = false
