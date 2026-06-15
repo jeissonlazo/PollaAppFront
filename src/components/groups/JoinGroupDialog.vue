@@ -68,7 +68,7 @@ function resetCode() {
           Ingresa el código de invitación del grupo.
         </NText>
 
-        <NInputOtp v-model:value="code" :length="6" />
+        <NInputOtp v-model:value="code" :length="8" />
 
       </div>
 
