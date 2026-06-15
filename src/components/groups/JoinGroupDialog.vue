@@ -31,7 +31,7 @@ function handleJoin() {
 
   const referralCode = code.value.join('')
 
-  if (referralCode.length !== 6) {
+  if (referralCode.length < 9) {
     message.warning('Ingresa el código completo')
     return
   }
