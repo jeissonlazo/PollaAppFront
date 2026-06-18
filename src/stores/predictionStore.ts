@@ -36,6 +36,7 @@ export const usePredictionStore = defineStore("predictions", () => {
   return {
     loading,
     predictions,
+    matchPredictions,
     loadPredictions,
     savePrediction,
     loadMatchPredictions
