@@ -17,9 +17,21 @@ export const useTeamStore = defineStore("teams", () => {
     }
   }
 
+  async function loadTeam(teamId: string) {
+    loading.value = true;
+    try {
+      const team = await teamsService.getTeamDetails (teamId);
+      teams.value = [team];
+    } catch (error) {
+      console.error("Error loading team:", error);
+    } finally {
+      loading.value = false;
+    }
+  }
   return {
     loading,
     teams,
-    loadTeams
+    loadTeams,
+    loadTeam,
   };
 });

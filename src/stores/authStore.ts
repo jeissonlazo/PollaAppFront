@@ -4,15 +4,20 @@ import { authService, type RegisterRequest } from "../services/authService";
 import type ConfirmationEmailRequest from "../interfaces/ConfirmationEmailInterface";
 import type { User } from "../interfaces/LoginInterface";
 export const useAuthStore = defineStore("auth", () => {
-  const token = ref<string | null>(localStorage.getItem("token"));
-  const isGlobalAdmin = ref<boolean>(false);
   const loading = ref(false);
 
-  const isAuthenticated = computed(() => !!token.value);
+  const token = ref<string | null>(localStorage.getItem("token"));
 
   const user = ref<User | null>(
     JSON.parse(localStorage.getItem("user") || "null"),
   );
+
+  const isAuthenticated = computed(() => !!token.value);
+
+  const isGlobalAdmin = computed(() => {
+    return user.value?.roles?.includes(3) ?? false;
+  });
+
 
   async function register(payload: RegisterRequest) {
     loading.value = true;
@@ -35,12 +40,16 @@ export const useAuthStore = defineStore("auth", () => {
       });
 
       token.value = response.access_token;
+      console.log("Login successful, received token:", token.value);
+
       user.value = response.user;
+      console.log("Login successful, received token:", user.value);
 
       localStorage.setItem("token", response.access_token);
+
       localStorage.setItem("user", JSON.stringify(response.user));
-      if(response.user.roles.includes(3)) { // Assuming 3 represents global admin role
-        isGlobalAdmin.value = true;
+      if (response.user.roles.includes(3)) {
+        // Assuming 3 represents global admin role
       }
       return true;
     } finally {
@@ -85,7 +94,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
-  async function changePassword( email: string, code: string, password : string) {
+  async function changePassword(email: string, code: string, password: string) {
     loading.value = true;
 
     try {
@@ -115,6 +124,6 @@ export const useAuthStore = defineStore("auth", () => {
     confirmEmail,
     sendRecoveryCode,
     validateRecoveryCode,
-    changePassword
+    changePassword,
   };
 });

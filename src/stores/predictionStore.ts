@@ -5,7 +5,7 @@ import { type UserPredictions } from "../interfaces/MatchPrediction.ts";
 export const usePredictionStore = defineStore("predictions", () => {
   const loading = ref(false);
   const predictions = ref<UserPredictions>({ user_id: '', group_id: '', predictions: [] });
-
+  const matchPredictions = ref([]);
   async function loadPredictions(group_id: string, user_id: string) {
     loading.value = true;
     try {
@@ -25,10 +25,19 @@ export const usePredictionStore = defineStore("predictions", () => {
     }
   }
 
+  async function loadMatchPredictions(match_id: string, group_id: string) {
+    try{
+      await predictionService.getMatchPredictions(match_id, group_id)
+    }catch (error) {
+      console.error("Error loading match predictions:", error);
+    }
+  }
+
   return {
     loading,
     predictions,
     loadPredictions,
-    savePrediction
+    savePrediction,
+    loadMatchPredictions
   };
 });

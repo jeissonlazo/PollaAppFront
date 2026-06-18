@@ -9,7 +9,7 @@ import {
     type MenuOption
 } from 'naive-ui'
 import AdminMenu from './AdminMenu.vue'
-import { User, LogOut, Settings2 } from '@lucide/vue';
+import { User, LogOut, Settings2, NotepadText } from '@lucide/vue';
 import { useAuthStore } from '../stores/authStore'
 const router = useRouter()
 const authStore = useAuthStore()
@@ -80,18 +80,32 @@ const handleSelect = (key: string) => {
 <template>
     <header class="header">
 
-        <RouterLink to="/" class="brand">
-            <img src="@/assets/logo.svg" alt="Pollapp" class="logo" />
+        <div class="menu">
 
-            <span class="title">
-                Pollapp
-            </span>
-        </RouterLink>
+            <RouterLink to="/" class="brand">
+                <img src="@/assets/logo.svg" alt="Pollapp" class="logo" />
+
+                <span class="title">
+                    Pollapp
+                </span>
+            </RouterLink>
+            <RouterLink to="/home">
+                <n-button quaternary>
+                    <template #icon>
+                        <n-icon>
+                            <NotepadText />
+                        </n-icon>
+                    </template>
+                    Mis Grupos
+                </n-button>
+            </RouterLink>
+
+            <AdminMenu v-if="authStore.isGlobalAdmin" />
+        </div>
 
 
         <div class="actions">
 
-            <AdminMenu v-if="authStore.isGlobalAdmin" />
 
             <n-split :default-size="0.8">
                 <template #1>
@@ -104,6 +118,9 @@ const handleSelect = (key: string) => {
                     <NAvatar round size="small">
                         <User />
                     </NAvatar>
+                    <span style="margin-left: 8px;">
+                        {{ authStore.user?.email }}
+                    </span>
                 </NButton>
             </NDropdown>
 
@@ -132,7 +149,11 @@ const handleSelect = (key: string) => {
     gap: 12px;
     text-decoration: none;
 }
-
+.menu{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
 .logo {
     width: 36px;
     height: 36px;

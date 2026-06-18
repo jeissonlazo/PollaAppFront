@@ -64,16 +64,6 @@ const routes = [
         component: () => import("../views/dashboard/HomeView.vue"),
       },
       {
-        path: "matches",
-        name: "matches",
-        component: () => import("../views/dashboard/MatchesView.vue"),
-      },
-      {
-        path: "predictions",
-        name: "predictions",
-        component: () => import("../views/dashboard/PredictionsView.vue"),
-      },
-      {
         path: "profile",
         name: "profile",
         component: () => import("../views/dashboard/ProfileView.vue"),
@@ -81,7 +71,12 @@ const routes = [
       {
         path: "groups/:id",
         name: "group-details",
-        component: () => import("../views/dashboard/groups/GroupDetailsView.vue"),
+        component: () => import("../views/dashboard/groups/GroupView.vue"),
+      },
+      {
+        path: "matches/:id/:group_id",
+        name: "match-details",
+        component: () => import("../views/dashboard/MatchDetails.vue"),
       },
 
       {

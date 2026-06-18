@@ -71,7 +71,7 @@ function handleSelect(key: string) {
 <template>
 
   <NDropdown trigger="click" :options="options" @select="handleSelect">
-    <NButton secondary>
+    <NButton quaternary>
 
       <template #icon>
         <NIcon>

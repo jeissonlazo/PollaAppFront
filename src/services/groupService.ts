@@ -36,5 +36,10 @@ export const groupService = {
             invite_code,
             user_id
         })
+    },
+
+    async getGroupRanking(groupId: string) {
+        const response = await api.get(`/groups/${groupId}/ranking`)
+        return response.data
     }
 }

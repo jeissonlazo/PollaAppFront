@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { h, onMounted, ref } from 'vue'
+import { h, ref } from 'vue'
 import type { Match, UserPredictions, MatchUserPrediction } from "../../../interfaces/MatchPrediction.ts";
-import { useMatchesStore } from '../../../stores/MatchesStore.ts'
 import { usePredictionStore } from '../../../stores/predictionStore.ts'
 import { useAuthStore } from '../../../stores/authStore.ts'
 import {
@@ -9,19 +8,19 @@ import {
     NInputNumber,
     NTag,
     NImage,
+    NButton,
     type DataTableColumns
 } from 'naive-ui'
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
-    group_id: string
+    group_id: string,
+    matches: Match[]
 }>()
-const matchesStore = useMatchesStore()
 const predictionStore = usePredictionStore()
 const predictions = ref<MatchUserPrediction[]>([])
 const authStore = useAuthStore()
-const savedPredictions = ref<UserPredictions | null>(null)
-const matchesList = ref<Match[]>([])
-
+const router = useRouter()
 const columns: DataTableColumns<Match> = [
     {
         title: 'Fecha',
@@ -49,10 +48,18 @@ const columns: DataTableColumns<Match> = [
         title: 'Partido',
         key: 'match',
         render(row) {
-            return `${row.team1?.country || 'TBD'} vs ${row.team2?.country || 'TBD'}`
+            return h(
+                NButton,
+                {
+                    onClick: () => goToMatch(row)
+                },
+                {
+                    default: () =>
+                        `${row.team1?.country || 'TBD'} vs ${row.team2?.country || 'TBD'}`
+                }
+            )
         }
     },
-
     {
         title: 'Estadio',
         key: 'ground'
@@ -169,24 +176,9 @@ const columns: DataTableColumns<Match> = [
     }
 ]
 
-const loadPredictions = async () => {
-    await matchesStore.loadMatches()
-    await predictionStore.loadPredictions(props.group_id, authStore.user?.id || '')
-    savedPredictions.value = predictionStore.predictions
-    matchesList.value = matchesStore.matches
-
-    matchesList.value.forEach(match => {
-        const userPrediction = savedPredictions.value?.predictions.find(
-            (prediction) => prediction.match_id === match.match_id
-        )
-
-        if (userPrediction) {
-            match.user_prediction_team1 = userPrediction.score_team1
-            match.user_prediction_team2 = userPrediction.score_team2
-        }
-    })
+function goToMatch(match: Match) {
+    router.push(`/dashboard/matches/${match.match_id}/${props.group_id}`)
 }
-
 function formatDate(date: string) {
     return new Date(date).toLocaleDateString('es-CO', {
         day: '2-digit',
@@ -225,20 +217,13 @@ const addPrediction = (match: Match) => {
     })
 }
 
-onMounted(() => {
-    loadPredictions()
-})
 </script>
 
 <template>
-    <n-button
-        type="primary"
-        style="margin-bottom: 16px;"
-        @click="savePredictions"
-    >
+    <n-button type="primary" style="margin-bottom: 16px;" @click="savePredictions">
         Guardar Predicciones
     </n-button>
-    <NDataTable :columns="columns" :data="matchesList" :pagination="{
+    <NDataTable :columns="columns" :data="props.matches" :pagination="{
         pageSize: 10
     }" />
 </template>
