@@ -2,7 +2,6 @@
 import { computed, h } from 'vue'
 import {
     NDataTable,
-    NTag,
     type DataTableColumns
 } from 'naive-ui'
 
