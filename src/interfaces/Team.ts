@@ -3,4 +3,5 @@ export interface Team {
     country: string
     group_name: string
     flag: string
+    external_id: string
 }

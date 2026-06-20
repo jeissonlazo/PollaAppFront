@@ -1,6 +1,6 @@
 import { type UserPredictions } from '../interfaces/MatchPrediction'
 import api from './api'
-
+import { type UsersPrediction } from '../interfaces/predictions'
 
 export const predictionService = {
 
@@ -13,8 +13,9 @@ export const predictionService = {
     await api.post('/predictions', {user_id: predictions.user_id, group_id: predictions.group_id, predictions: predictions.predictions})
   },
 
-  async getMatchPredictions(match_id: string, group_id: string): Promise<void> {
-    await api.get(`/predictions/group/${group_id}/match/${match_id}`)
+  async getMatchPredictions(match_id: string, group_id: string): Promise<UsersPrediction[]> {
+    const response = await api.get(`/predictions/group/${group_id}/match/${match_id}`)
+    return response.data
   }
 
 }

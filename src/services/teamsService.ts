@@ -8,10 +8,12 @@ export const teamsService = {
     return response.data;
   },
   async getTeamDetails (teamId: string): Promise<Team> {
-    const response = await footballApi.get("/teams", {
+    const response = await footballApi.get('' , {
       params: {
-        id: teamId,
-      },
+        season: 2024,
+        team: teamId,
+        league: 1
+      }
     });
 
     return response.data.response[0];

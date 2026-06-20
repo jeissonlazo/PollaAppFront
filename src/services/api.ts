@@ -15,9 +15,9 @@ api.interceptors.request.use((config) => {
 });
 
 export const footballApi = axios.create({
-  baseURL: "https://api.football-data.org/v4/competitions/2000/teams",
+  baseURL: "https://v3.football.api-sports.io/teams/statistics?season=2024&league=39",
   headers: {
-    "x-apisports-key": "2c50741340554a7983bf88efc6e1a176",
+    "x-apisports-key": "ceac301a7fae0f54f124c8b0e0c06344",
   },
 });
 

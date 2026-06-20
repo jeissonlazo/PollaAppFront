@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { predictionService } from "../services/predictionService.ts";
 import { type UserPredictions } from "../interfaces/MatchPrediction.ts";
+import type { UsersPrediction } from "../interfaces/predictions.ts";
+
 export const usePredictionStore = defineStore("predictions", () => {
   const loading = ref(false);
   const predictions = ref<UserPredictions>({ user_id: '', group_id: '', predictions: [] });
-  const matchPredictions = ref([]);
+  const userMatchPredictions = ref<UsersPrediction[]>([]);
   async function loadPredictions(group_id: string, user_id: string) {
     loading.value = true;
     try {
@@ -27,7 +29,8 @@ export const usePredictionStore = defineStore("predictions", () => {
 
   async function loadMatchPredictions(match_id: string, group_id: string) {
     try{
-      await predictionService.getMatchPredictions(match_id, group_id)
+      userMatchPredictions.value = await predictionService.getMatchPredictions(match_id, group_id)
+
     }catch (error) {
       console.error("Error loading match predictions:", error);
     }
@@ -36,7 +39,7 @@ export const usePredictionStore = defineStore("predictions", () => {
   return {
     loading,
     predictions,
-    matchPredictions,
+    userMatchPredictions,
     loadPredictions,
     savePrediction,
     loadMatchPredictions

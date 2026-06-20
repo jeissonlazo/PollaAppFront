@@ -7,3 +7,14 @@ export interface Prediction {
   score_team2: number
   ended: boolean
 }
+
+export interface UsersPrediction {
+    team2_score: any
+    user_id:     string;
+    username:    string;
+    score_team1: number | null;
+    score_team2: number | null;
+    first_name:  string;
+    last_name:   string;
+    points:      number;
+}
