@@ -54,9 +54,19 @@ const columns: DataTableColumns<Match> = [
                     onClick: () => goToMatch(row)
                 },
                 {
-                    default: () =>
-                        `${row.team1?.country || 'TBD'} vs ${row.team2?.country || 'TBD'}`
+                    default: () => [
+                        h(NImage, {
+                            src: row.team1?.flag,
+                            width: 24,
+                        }),
+                        h('span', {}, ` ${row.team1?.country || 'TBD'} vs ${row.team2?.country || 'TBD'} `),
+                        h(NImage, {
+                            src: row.team2?.flag,
+                            width: 24,
+                        })
+                    ]
                 }
+
             )
         }
     },

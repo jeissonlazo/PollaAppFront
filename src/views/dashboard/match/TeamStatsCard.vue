@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { type Team } from '../../../interfaces/Team'
-import { teamsService } from '../../../services/teamsService.ts';
+//import { teamsService } from '../../../services/teamsService.ts';
 const props = defineProps<{
     team: Team | undefined
 }>()
