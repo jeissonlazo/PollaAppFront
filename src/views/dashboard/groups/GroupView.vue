@@ -33,7 +33,7 @@ const {
     selectedGroup
 } = storeToRefs(groupStore)
 
-const matches = storeToRefs(matchesStore).matches
+const { matches } = storeToRefs(matchesStore)
 const isAdmin = computed(() => {
     return (
         groupStore.selectedGroup?.admin_id ===
@@ -42,9 +42,7 @@ const isAdmin = computed(() => {
 })
 
 const loadData = async () => {
-
     loading.value = true
-    console.log('Loading group data for group ID:', groupId)
     try {
         await groupStore.loadGroup(groupId)
         await groupStore.loadGroupRanking(groupId)
@@ -74,7 +72,7 @@ onMounted(loadData)
                 <!-- PRONÓSTICOS -->
 
                 <NTabPane name="predictions" tab="Pronósticos">
-                    <GroupPredictionsTab :group_id="groupId" :matches="matches"  />
+                    <GroupPredictionsTab :group_id="groupId" :matches="matches" />
                 </NTabPane>
 
                 <!-- POSICIONES -->

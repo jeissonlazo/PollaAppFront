@@ -9,9 +9,11 @@ import {
 <template>
   <NConfigProvider>
     <n-modal-provider>
-      <NMessageProvider>
-        <RouterView />
-      </NMessageProvider>
+      <n-loading-bar-provider>
+        <NMessageProvider>
+          <RouterView />
+        </NMessageProvider>
+      </n-loading-bar-provider>
     </n-modal-provider>
   </NConfigProvider>
 </template>

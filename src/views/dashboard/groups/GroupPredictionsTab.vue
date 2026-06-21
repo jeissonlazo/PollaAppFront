@@ -9,10 +9,14 @@ import {
     NTag,
     NImage,
     NButton,
+    useMessage ,
+    useLoadingBar,
     type DataTableColumns
 } from 'naive-ui'
 import { useRouter } from 'vue-router';
 
+const message = useMessage()
+const loadingBar = useLoadingBar()
 const props = defineProps<{
     group_id: string,
     matches: Match[]
@@ -99,7 +103,7 @@ const columns: DataTableColumns<Match> = [
                         },
                     ),
                     h(NInputNumber, {
-                        value: row.user_prediction_team1,
+                        value: row.user_prediction_team1 !== null ? row.user_prediction_team1 : null,
 
                         min: 0,
                         max: 20,
@@ -123,7 +127,7 @@ const columns: DataTableColumns<Match> = [
                     ),
 
                     h(NInputNumber, {
-                        value: row.user_prediction_team2,
+                        value: row.user_prediction_team2 !== null ? row.user_prediction_team2 : null,
                         min: 0,
                         max: 20,
                         'show-button': false,
@@ -197,13 +201,23 @@ function formatDate(date: string) {
     })
 }
 
-function savePredictions() {
-    const payload: UserPredictions = {
-        user_id: authStore.user?.id || '',
-        group_id: props.group_id,
-        predictions: predictions.value
+async function savePredictions() {
+    loadingBar.start()
+    try {
+        const payload: UserPredictions = {
+            user_id: authStore.user?.id || '',
+            group_id: props.group_id,
+            predictions: predictions.value
+        }
+        await predictionStore.savePrediction(payload)
+        message.success("Predicciones guardadas correctamente")
     }
-    predictionStore.savePrediction(payload)
+    catch (error) {
+        message.error("Error saving predictions:")
+    }
+    finally {
+        loadingBar.finish()
+    }
 }
 
 const addPrediction = (match: Match) => {
@@ -233,7 +247,11 @@ const addPrediction = (match: Match) => {
     <n-button type="primary" style="margin-bottom: 16px;" @click="savePredictions">
         Guardar Predicciones
     </n-button>
-    <NDataTable :columns="columns" :data="props.matches" :pagination="{
+    <NDataTable 
+    :columns="columns" 
+    :data="props.matches" 
+    :row-key="row => row.match_id"
+    :pagination="{
         pageSize: 10
     }" />
 </template>

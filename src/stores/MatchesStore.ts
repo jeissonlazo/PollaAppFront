@@ -14,7 +14,7 @@ export const useMatchesStore = defineStore("matches", () => {
     loading.value = true;
     try {
       matches.value = await matchesService.getMatches();
-      predictions.value = await predictionService.getPredictions(userId, groupId);
+      predictions.value = await predictionService.getPredictions(groupId, userId);
       matches.value = addUserPredictionsToMatches(matches.value, predictions.value);
       matches.value.sort((a, b) => {
         const dateA = new Date(a.match_date);
@@ -68,6 +68,10 @@ export const useMatchesStore = defineStore("matches", () => {
       if (userPrediction) {
         match.user_prediction_team1 = userPrediction.score_team1;
         match.user_prediction_team2 = userPrediction.score_team2;
+      }
+      else{
+        match.user_prediction_team1 = null;
+        match.user_prediction_team2 = null;
       }
     });
 
