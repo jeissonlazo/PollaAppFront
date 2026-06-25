@@ -117,26 +117,10 @@ const goToLogin = () => {
 }
 
 const registerWithGoogle = () => {
-
 	window.location.href =
 		`${import.meta.env.VITE_API_URL}auth/google/login`
 }
 
-const callback = async (response: any) => {
-	try {
-		loading.value = true
-
-		await authStore.registerWithGoogle(response)
-
-		message.success('Cuenta creada correctamente')
-
-		router.push(`/confirm-email/${authStore.user?.email}`)
-	} catch (error) {
-		message.error('Error al registrar con Google')
-	} finally {
-		loading.value = false
-	}
-}
 </script>
 
 <template>
@@ -157,7 +141,6 @@ const callback = async (response: any) => {
 				</template>
 			</NButton>
 
-			<GoogleLogin :callback="callback"/>
 			<NDivider>
 				o
 			</NDivider>

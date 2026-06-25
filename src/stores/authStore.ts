@@ -116,17 +116,6 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
-  async function registerWithGoogle(response: any) {
-    loading.value = true;
-
-    try {
-      // Implement the logic for registering with Google here
-      // This might involve calling a backend endpoint that handles Google OAuth
-    } finally {
-      loading.value = false;
-    }
-  }
-
   function logout() {
     token.value = null;
     localStorage.removeItem("token");
@@ -147,7 +136,6 @@ export const useAuthStore = defineStore("auth", () => {
     sendRecoveryCode,
     validateRecoveryCode,
     changePassword,
-    googleLogin,
-    registerWithGoogle
+    googleLogin
   };
 });
