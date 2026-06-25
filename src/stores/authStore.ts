@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { authService, type RegisterRequest } from "../services/authService";
 import type ConfirmationEmailRequest from "../interfaces/ConfirmationEmailInterface";
-import type { User } from "../interfaces/LoginInterface";
+import type { LoginResponse, User } from "../interfaces/LoginInterface";
 export const useAuthStore = defineStore("auth", () => {
   const loading = ref(false);
 
@@ -40,10 +40,8 @@ export const useAuthStore = defineStore("auth", () => {
       });
 
       token.value = response.access_token;
-      console.log("Login successful, received token:", token.value);
 
       user.value = response.user;
-      console.log("Login successful, received token:", user.value);
 
       localStorage.setItem("token", response.access_token);
 
@@ -105,15 +103,12 @@ export const useAuthStore = defineStore("auth", () => {
     }
   }
 
-  async function googleLogin(tokenId: string) {
-    loading.value = true;
-
-    try {
-      const response = await authService.googleLogin(tokenId);
-      return response.data;
-    } finally {
-      loading.value = false;
-    }
+  function googleLogin(userData: LoginResponse) {
+    console.log('userData', userData)
+    localStorage.setItem("user", JSON.stringify(userData.user))
+    localStorage.setItem("token", userData.access_token);
+    token.value = userData.access_token;
+    user.value = userData.user;
   }
 
   function logout() {
