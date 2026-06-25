@@ -33,6 +33,10 @@ export const authService = {
     
     async changePassword(email: string, code: string, password: string) {
         return api.post('/auth/reset-password', { usernameOrEmail: email, code, new_password:password })
+    },
+
+    async googleLogin(tokenId: string) {
+        return api.post('/auth/google-login', { tokenId })
     }
 }
 

@@ -40,6 +40,10 @@ const routes = [
       guest:true
     }
   },
+  {
+    path: '/oauth-success',
+    component: () => import('../views/auth/OAuthSuccessView.vue'),
+  },
 
   // DASHBOARD
   {

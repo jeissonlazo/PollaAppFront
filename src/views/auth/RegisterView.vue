@@ -115,6 +115,28 @@ const handleRegister = async () => {
 const goToLogin = () => {
 	router.push('/login')
 }
+
+const registerWithGoogle = () => {
+
+	window.location.href =
+		`${import.meta.env.VITE_API_URL}auth/google/login`
+}
+
+const callback = async (response: any) => {
+	try {
+		loading.value = true
+
+		await authStore.registerWithGoogle(response)
+
+		message.success('Cuenta creada correctamente')
+
+		router.push(`/confirm-email/${authStore.user?.email}`)
+	} catch (error) {
+		message.error('Error al registrar con Google')
+	} finally {
+		loading.value = false
+	}
+}
 </script>
 
 <template>
@@ -123,7 +145,22 @@ const goToLogin = () => {
 			<div style="text-align: center; margin-bottom: 24px;">
 				<img src="../../assets/logo.svg" class="logo" />
 			</div>
+
 			<n-h3>Registra tu cuenta</n-h3>
+
+			<NButton block size="large" @click="registerWithGoogle">
+				Continuar con Google
+				<template #icon>
+					<n-icon>
+						<img src="@/assets/google-authenticator.svg" style="height: 19px;"/>
+					</n-icon>
+				</template>
+			</NButton>
+
+			<GoogleLogin :callback="callback"/>
+			<NDivider>
+				o
+			</NDivider>
 			<NForm ref="formRef" :model="form" :rules="rules">
 				<NFormItem label="Nombre" path="first_name">
 					<NInput v-model:value="form.first_name" placeholder="Nombre" />
@@ -175,6 +212,7 @@ const goToLogin = () => {
 	width: 100%;
 	max-width: 500px;
 }
+
 .logo {
 	width: 80px;
 }
