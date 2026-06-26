@@ -6,14 +6,12 @@ import {
     NDropdown,
     NButton,
     NIcon,
-    type MenuOption
 } from 'naive-ui'
 import AdminMenu from './AdminMenu.vue'
 import { User, LogOut, Settings2, NotepadText } from '@lucide/vue';
 import { useAuthStore } from '../stores/authStore'
 const router = useRouter()
 const authStore = useAuthStore()
-const activeKey = ref<string | null>(null)
 const options = [
     {
         label: 'Mi Perfil',
@@ -39,21 +37,6 @@ const options = [
         icon: () => h(NIcon, null, {
             default: () => h(LogOut)
         })
-    }
-]
-
-const menuOptions: MenuOption[] = [
-    {
-        label: 'Dashboard',
-        key: 'dashboard'
-    },
-    {
-        label: 'Mis Encuestas',
-        key: 'my-polls'
-    },
-    {
-        label: 'Crear Encuesta',
-        key: 'create-poll'
     }
 ]
 
@@ -105,13 +88,6 @@ const handleSelect = (key: string) => {
 
 
         <div class="actions">
-
-
-            <n-split :default-size="0.8">
-                <template #1>
-                    <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" responsive />
-                </template>
-            </n-split>
 
             <NDropdown trigger="click" :options="options" @select="handleSelect">
                 <NButton quaternary>

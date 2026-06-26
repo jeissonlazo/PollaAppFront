@@ -56,7 +56,7 @@
             <NText v-if="match?.finish" type="error">
 
                 <NIcon>
-                    <CircleDot />
+                    <Circle />
                 </NIcon>
 
                 Resultado Final:
@@ -98,7 +98,7 @@ import MatchPredictions from './match/MatchPredictions.vue';
 import { usePredictionStore } from '../../stores/predictionStore.ts';
 import TeamStatsCard from './match/TeamStatsCard.vue';
 import type { Team } from '../../interfaces/Team.ts';
-import { MapPinSearch, Medal,  Clock3 } from '@lucide/vue';
+import { MapPinSearch, Medal,  Clock3, Circle  } from '@lucide/vue';
 const predictionStore = usePredictionStore()
 const matchesStore = useMatchesStore()
 const team1Stats = ref<Team | undefined>()

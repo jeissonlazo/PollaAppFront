@@ -2,9 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../stores/authStore";
 
 const routes = [
+  
   {
     path: "/",
-    redirect: "/dashboard/home",
+    component: () => import("../views/LandingView.vue"),
   },
 
   // AUTH
