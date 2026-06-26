@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, ref } from 'vue'
+import { h } from 'vue'
 import { useRouter } from 'vue-router'
 import {
     NAvatar,
