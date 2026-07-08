@@ -9,6 +9,7 @@ import {
     NTabPane,
     NH2,
     NText,
+    useLoadingBar 
 } from 'naive-ui'
 
 import { useAuthStore } from '../../../stores/authStore.ts'
@@ -24,7 +25,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 const groupStore = useGroupStore()
 const matchesStore = useMatchesStore()
-
+const loadingBar = useLoadingBar()
 const loading = ref(false)
 const groupId = route.params.id as string
 
@@ -43,12 +44,14 @@ const isAdmin = computed(() => {
 
 const loadData = async () => {
     loading.value = true
+    loadingBar.start()
     try {
         await groupStore.loadGroup(groupId)
         await groupStore.loadGroupRanking(groupId)
         await matchesStore.loadMatchesAndPredictions(authStore.user?.id || "", groupId)
     } finally {
         loading.value = false
+        loadingBar.finish()
     }
 }
 

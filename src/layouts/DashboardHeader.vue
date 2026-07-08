@@ -8,7 +8,7 @@ import {
     NIcon,
 } from 'naive-ui'
 import AdminMenu from './AdminMenu.vue'
-import { User, LogOut, Settings2, NotepadText } from '@lucide/vue';
+import { User, LogOut, Settings2, NotepadText, TrophyIcon } from '@lucide/vue';
 import { useAuthStore } from '../stores/authStore'
 const router = useRouter()
 const authStore = useAuthStore()
@@ -72,7 +72,7 @@ const handleSelect = (key: string) => {
                     Pollapp
                 </span>
             </RouterLink>
-            <RouterLink to="/home">
+            <RouterLink to="/dashboard/groups">
                 <n-button quaternary>
                     <template #icon>
                         <n-icon>
@@ -82,6 +82,16 @@ const handleSelect = (key: string) => {
                     Mis Grupos
                 </n-button>
             </RouterLink>
+
+            <n-button quaternary>
+                <template #icon>
+                    <n-icon>
+                        <TrophyIcon />
+                    </n-icon>
+                </template>
+                Torneos
+                
+            </n-button>
 
             <AdminMenu v-if="authStore.isGlobalAdmin" />
         </div>
@@ -125,11 +135,13 @@ const handleSelect = (key: string) => {
     gap: 12px;
     text-decoration: none;
 }
-.menu{
+
+.menu {
     display: flex;
     align-items: center;
     gap: 24px;
 }
+
 .logo {
     width: 36px;
     height: 36px;

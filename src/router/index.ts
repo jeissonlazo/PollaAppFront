@@ -73,7 +73,12 @@ const routes = [
         name: "profile",
         component: () => import("../views/dashboard/ProfileView.vue"),
       },
+      
       {
+        path: "groups",
+        name: "group-list",
+        component: () => import("../views/dashboard/groups/MiGroups.vue"),
+      },{
         path: "groups/:id",
         name: "group-details",
         component: () => import("../views/dashboard/groups/GroupView.vue"),

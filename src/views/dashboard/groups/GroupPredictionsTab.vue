@@ -14,7 +14,6 @@ import {
     type DataTableColumns
 } from 'naive-ui'
 import { useRouter } from 'vue-router';
-
 const message = useMessage()
 const loadingBar = useLoadingBar()
 const props = defineProps<{

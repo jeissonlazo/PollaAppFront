@@ -2,34 +2,42 @@
 import { onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import {
-    NCard,
-    NGrid,
-    NGridItem,
-    NH2,
-    NText,
-    NEmpty,
-    NSpin,
     useMessage
-
 } from 'naive-ui'
 import { useGroupStore } from '../../stores/groupStore'
 import type { Group } from '../../interfaces/group'
 import { useAuthStore } from '../../stores/authStore'
 import CreateGroupDialog from '../../components/CreateGroupDialog.vue'
 import JoinGroupDialog from '../../components/groups/JoinGroupDialog.vue'
+import { useLoadingBar } from 'naive-ui'
+//components
+import HomeHeader from './home/HomeHeader.vue'
+import HomeResume from './home/HomeResume.vue'
+import HomeMyGroups from './home/HomeMyGroups.vue'
+import HomeTournaments from './home/HomeTournaments.vue'
 const groupStore = useGroupStore()
 const showCreateDialog = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 const message = useMessage()
-
+const loadingBar = useLoadingBar()
 const localLoading = ref(false)
 const showJoinDialog = ref(false)
 const localGroups = ref<Group[]>([])
 const code = route.params.code as string | undefined
+const tournaments = ref([
+    {
+        id: '1',
+        name: 'Mundial FIFA 2026',
+        description: 'El Mundial de Fútbol es el torneo internacional más importante del mundo, donde se enfrentan las selecciones nacionales de fútbol de diferentes países para determinar al campeón mundial.',
+        startDate: '2026-06-08',
+        endDate: '2026-07-08'
+    }
+])
 const loadGroups = async () => {
     localLoading.value = true
+    loadingBar.start()
     try {
         // TODO:
         await groupStore.loadGroups(authStore.user?.id || '')
@@ -38,6 +46,7 @@ const loadGroups = async () => {
     } finally {
         localLoading.value = false
     }
+    loadingBar.finish()
 }
 
 const openGroup = (groupId: string) => {
@@ -87,57 +96,29 @@ onMounted(() => {
 <template>
     <div class="container">
 
-        <div class="header">
-            <NH2>Mis Grupos</NH2>
-            <div class="actions">
-                <NButton type="primary" @click="handleCreateGroup">
-                    Crear Grupo
-                </NButton>
-
-                <NButton secondary @click="handleJoinGroup">
-                    Unirse a un Grupo
-                </NButton>
-            </div>
+        <HomeHeader @create-group="handleCreateGroup" @join-group="handleJoinGroup" />
+        <HomeResume :groups-count="localGroups.length" />
+        <div class="container__content">
+            <HomeMyGroups :local-loading="localLoading" :local-groups="localGroups" @open-group="openGroup" />
+            <HomeTournaments :tournaments="tournaments" />
         </div>
-
-        <NSpin :show="localLoading">
-
-            <NEmpty v-if="localGroups.length === 0" description="No perteneces a ningún grupo" />
-
-            <NGrid v-else cols="1 s:2 m:3 l:4" responsive="screen" :x-gap="16" :y-gap="16">
-                <NGridItem v-for="group in localGroups" :key="group.group_id">
-                    <NCard hoverable class="group-card" @click="openGroup(group.group_id)">
-                        <div class="card-content">
-
-                            <NText depth="3">
-                                {{ group.eventName }}
-                            </NText>
-
-                            <h3>
-                                {{ group.name }}
-                            </h3>
-
-                            <NText depth="2">
-                                {{ group.members }}
-                                participantes
-                            </NText>
-
-                        </div>
-                    </NCard>
-
-                </NGridItem>
-            </NGrid>
-        </NSpin>
         <CreateGroupDialog v-model:show="showCreateDialog" />
         <JoinGroupDialog v-model:show="showJoinDialog" :url-code="code" @join="handleGroupJoined" />
     </div>
 </template>
 
-<style scoped>
+<style scoped >
 .container {
     padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
-
+.container__content {
+    margin-top: 24px;
+    display: grid;
+    grid-gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
 .header {
     margin-bottom: 24px;
 }

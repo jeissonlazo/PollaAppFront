@@ -2,19 +2,27 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 import { groupService } from "../services/groupService";
-import type { GroupRankingUser} from "../interfaces/groupRanking";
+import type { GroupRankingUser } from "../interfaces/groupRanking";
 import type { Group, CreateGroupRequest } from "../interfaces/group";
 
 export const useGroupStore = defineStore("groups", () => {
   const loading = ref(false);
+  const loadedGroups = ref(false);
   const groups = ref<Group[]>([]);
   const selectedGroup = ref<Group | null>(null);
   const usersRanking = ref<GroupRankingUser[]>([]);
 
-  async function loadGroups(user_id: string) {
+  async function loadGroups(user_id: string, force = false) {
+    if (loadedGroups.value && !force) {
+      return;
+    }
+
     loading.value = true;
+
     try {
       groups.value = await groupService.getMyGroups(user_id);
+      loadedGroups.value = true;
+      loading.value = false;
     } finally {
       loading.value = false;
     }
@@ -22,7 +30,6 @@ export const useGroupStore = defineStore("groups", () => {
 
   async function loadGroup(groupId: string) {
     loading.value = true;
-
     try {
       selectedGroup.value = await groupService.getGroup(groupId);
     } finally {
@@ -73,16 +80,23 @@ export const useGroupStore = defineStore("groups", () => {
     }
   }
 
+  function clear() {
+    groups.value = [];
+
+    loadedGroups.value = false;
+  }
+
   return {
     loading,
     groups,
     selectedGroup,
     usersRanking,
     loadGroups,
+    clear,
     loadGroup,
     createGroup,
     deleteGroup,
     joinGroup,
-    loadGroupRanking
+    loadGroupRanking,
   };
 });

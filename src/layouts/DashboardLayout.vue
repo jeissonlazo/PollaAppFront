@@ -9,6 +9,7 @@ import DashboardHeader from './DashboardHeader.vue'
         <DashboardHeader />
 
         <main class="content">
+            
             <RouterView />
         </main>
 
@@ -18,6 +19,7 @@ import DashboardHeader from './DashboardHeader.vue'
 <style scoped>
 .dashboard-layout {
     min-height: 100vh;
+    background: #f5f7fa;
 }
 
 .header {
@@ -30,9 +32,10 @@ import DashboardHeader from './DashboardHeader.vue'
 }
 
 .content {
-    background: #f5f7fa;
     padding: 24px;
     box-sizing: border-box;
     min-height: calc(100vh - 65px);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 </style>
